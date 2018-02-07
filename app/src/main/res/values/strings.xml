@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">SiLaTra</string>
+    <string name="username">Username</string>
+    <string name="server_ip">Server IP</string>
+    <string name="frame_rate">Frame Rates</string>
+    <string name="applyChanges">Apply Changes</string>
+    <string name="settings">Settings</string>
+    <string name="credits">Credits</string>
+    <string name="about">About</string>
+    <string name="dot">.</string>
+    <string name="td">Tejas Dastane</string>
+    <string name="vr">Varun Rao</string>
+    <string name="sk">Kartik Shenoy</string>
+    <string name="dv">Devendra Vyavaharkar</string>
+    <string name="teamName">Team SiLaTra</string>
+</resources>
