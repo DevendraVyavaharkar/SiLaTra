@@ -4,6 +4,8 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
@@ -132,19 +134,20 @@ public class CameraActivity extends AppCompatActivity{
         CameraManager manager = (CameraManager)getSystemService(Context.CAMERA_SERVICE);
         try{
             CameraCharacteristics characteristics= manager.getCameraCharacteristics(cameraDevice.getId());
-            Size[] jpegSizes = null;
-            if(characteristics!=null)
-                jpegSizes = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
-                        .getOutputSizes(ImageFormat.JPEG);
+            //Size[] jpegSizes = null;
+            //if(characteristics!=null)
+              //  jpegSizes = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
+                //        .getOutputSizes(ImageFormat.JPEG);
 
             //Capturing image with size 640*480
             int width=640;
             int height=480;
-            if(jpegSizes!=null && jpegSizes.length>0)
+            /*if(jpegSizes!=null && jpegSizes.length>0)
             {
                 width=jpegSizes[0].getWidth();
                 height=jpegSizes[0].getHeight();
-            }
+                Log.d("Height & Width", image.getHeight()+"");
+            }*/
             final ImageReader reader = ImageReader.newInstance(width,height,ImageFormat.JPEG,1);
             List<Surface> outputSurfaces = new ArrayList<>(2);
             outputSurfaces.add(reader.getSurface());
@@ -172,9 +175,30 @@ public class CameraActivity extends AppCompatActivity{
                         ByteBuffer buffer = image.getPlanes()[0].getBuffer();
                         byte[] bytes = new byte[buffer.capacity()];
                         buffer.get(bytes);
-                        save(bytes);
+                        Bitmap bitmapImage = BitmapFactory.decodeByteArray(bytes, 0, bytes.length, null);
 
-                        new UDPClientActivity().execute(bytes);
+                        // Code to change the orientation of the captured image
+
+
+                        ByteArrayOutputStream out = new ByteArrayOutputStream();
+                        bitmapImage.compress(Bitmap.CompressFormat.JPEG, 98, out);
+                        byte[] byteArray = out.toByteArray();
+                        //Log.e("ByteArray","Length of BytesArray:"+byteArray.length);
+                        save(byteArray);
+
+                        // Trying something new here
+                       /*final Image.Plane[] planes = image.getPlanes();
+                        final ByteBuffer buffer = planes[0].getBuffer();
+                        int offset = 0;
+                        int pixelStride = planes[0].getPixelStride();
+                        int rowStride = planes[0].getRowStride();
+                        int rowPadding = rowStride - pixelStride * mWidth;
+                        // create bitmap
+                        Bitmap bitmap = Bitmap.createBitmap(mWidth+rowPadding/pixelStride, mHeight, Bitmap.Config.RGB_565);
+                        bitmap.copyPixelsFromBuffer(buffer);
+                        image.close();*/
+
+                        new UDPClientActivity().execute(byteArray);
 
                     }catch (FileNotFoundException e){
                         e.printStackTrace();
@@ -262,7 +286,7 @@ public class CameraActivity extends AppCompatActivity{
         }
         catch (NullPointerException e){
             e.printStackTrace();
-            Toast.makeText(this, "Width:"+imageDimension.getWidth()+"Heigth:"+imageDimension.getHeight(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Width:"+imageDimension.getWidth()+"Height:"+imageDimension.getHeight(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -399,23 +423,24 @@ public class CameraActivity extends AppCompatActivity{
             DatagramPacket packet;
             Boolean run=true;
             String translatedText=null;
-            byte[] buffer = new byte[1024]; //Buffer
-//            Toast.makeText(CameraActivity.this, "Length:"+bytes.length, Toast.LENGTH_SHORT).show();
+            byte[] buffer = new byte[65507]; //Buffer
+            //Toast.makeText(CameraActivity.this, "Length:"+bytes.length, Toast.LENGTH_SHORT).show();
             Log.d("Length","Length of bytes array:"+bytes.length);
-            try {
+           /* try {
                 byte[] buf = ("files").getBytes();
                 udpSocket = new DatagramSocket();
                 serverAddr = InetAddress.getByName(SilatraDetails.serverIP);
                 packet = new DatagramPacket(buf, buf.length, serverAddr, 9001);
                 udpSocket.send(packet);
-            } catch (IOException e) {}
+                Log.d("Files sent","Sent the string Files");
+            } catch (IOException e) {}*/
 
             try
             {
                 // Transmission of byte array to Server through UDP Socket
                 udpSocket = new DatagramSocket();
                 serverAddr = InetAddress.getByName(SilatraDetails.serverIP);
-                packet = new DatagramPacket(bytes, buffer.length, serverAddr, 9001);
+                packet = new DatagramPacket(bytes, bytes.length, serverAddr, 9001);
                 udpSocket.send(packet);
                 Log.d("Transmission", "Message Sent successfully");
             }catch (SocketException e) {

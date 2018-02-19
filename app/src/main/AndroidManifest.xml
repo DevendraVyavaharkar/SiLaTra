@@ -23,7 +23,8 @@
         </activity>
 
         <activity android:name=".AboutActivity"/>
-        <activity android:name=".CameraActivity"/>
+        <activity android:name=".CameraActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".ClientSendAndListen"/>
         <activity android:name=".CreditsActivity"/>
         <activity android:name=".SettingsActivity"/>
