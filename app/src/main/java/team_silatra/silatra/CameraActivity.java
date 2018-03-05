@@ -34,7 +34,10 @@ import android.util.SparseIntArray;
 import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
@@ -109,6 +112,11 @@ public class CameraActivity extends AppCompatActivity{
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //To enable fullscreen mode -
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         setContentView(R.layout.camera_activity);
 
         textureView=(TextureView)findViewById(R.id.textureView);
@@ -121,9 +129,23 @@ public class CameraActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 //Starting the thread to establish connection with server for further transmission
+                /*int counter=0;
+                while(true)
+                {
+                    if(counter==50)
+                        break;
+                    else if(counter%5==0)
+                    {
+                        takePicture();
+                    }
+                    else{}
+                    counter++;
+                }*/
                 takePicture();
             }
         });
+
+       // btnCapture=(Button)findViewById(R.id.btnSwitch);
     }
 
     private void takePicture() {
@@ -231,8 +253,8 @@ public class CameraActivity extends AppCompatActivity{
                 @Override
                 public void onCaptureCompleted(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, @NonNull TotalCaptureResult result) {
                     super.onCaptureCompleted(session, request, result);
-                    Toast.makeText(CameraActivity.this,"Saved "+file, Toast.LENGTH_SHORT).show();
                     createCameraPreview();
+                    Toast.makeText(CameraActivity.this,"Saved "+file, Toast.LENGTH_SHORT).show();
                 }
             };
 

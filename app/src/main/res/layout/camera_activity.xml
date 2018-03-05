@@ -10,13 +10,13 @@
         android:id="@+id/translationTextview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textSize="20sp"
-        android:padding="10dp"
         android:alpha="0.5"
-        android:textColor="#000000"
-        android:textStyle="italic"
-        android:text="Translated text shows up here"/>
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="Translated text shows up here"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:textStyle="italic" />
 
     <TextureView
         android:id="@+id/textureView"
@@ -24,14 +24,35 @@
         android:layout_height="0dp"
         android:layout_weight="9" />
 
-    <Button
-        android:id="@+id/btnCapture"
-        android:text="CAPTURE"
+    <RelativeLayout
+        android:id="@+id/cameraBottom"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:background="#000000">
 
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btnToggleCamera"
+            android:text="Toggle"
+            android:layout_alignParentLeft="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btnCapture"
+            android:text="CAPTURE"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btnEnableFlash"
+            android:text="Flash"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
 
 </LinearLayout>

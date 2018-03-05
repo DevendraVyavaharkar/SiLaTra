@@ -3,9 +3,11 @@
     package="team_silatra.silatra">
 
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.hardware.camera2.full"/>
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-feature android:name="android.hardware.camera.flash" />
 
     <application
         android:allowBackup="true"
@@ -24,7 +26,8 @@
 
         <activity android:name=".AboutActivity"/>
         <activity android:name=".CameraActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <activity android:name=".ClientSendAndListen"/>
         <activity android:name=".CreditsActivity"/>
         <activity android:name=".SettingsActivity"/>
